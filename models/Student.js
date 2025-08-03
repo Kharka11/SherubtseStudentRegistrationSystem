@@ -1,6 +1,5 @@
 import pool from "../config/db.js";
 
-// Create students table
 export const createStudentTable = async () => {
     await pool.query(`
         CREATE TABLE IF NOT EXISTS students (
@@ -16,7 +15,6 @@ export const createStudentTable = async () => {
     `);
 };
 
-// Insert new student record (Fixed)
 export const insertStudent = async (id, userId, course, year, name, gender, scholarship, screenshotPath) => {
     await pool.query(
         `INSERT INTO students 
@@ -26,16 +24,14 @@ export const insertStudent = async (id, userId, course, year, name, gender, scho
     );
 };
 
-// Fetch student record by user ID
 export const getStudentByUserId = async (userId) => {
     const result = await pool.query(
         `SELECT * FROM students WHERE user_id = $1 LIMIT 1`,
         [userId]
     );
-    return result.rows[0];
+    return result.rows[0] || null;
 };
 
-// Update student registration (for edits)
 export const updateStudent = async (userId, course, year, name, gender, scholarship, screenshotPath) => {
     await pool.query(
         `UPDATE students 

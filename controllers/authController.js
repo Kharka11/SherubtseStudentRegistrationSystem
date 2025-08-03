@@ -4,20 +4,19 @@ import nodemailer from "nodemailer";
 import { insertUser, findUserByEmail, verifyUser } from "../models/User.js";
 
 export const getSignup = (req, res) => {
-    res.render("signup", { message: "" });
+    res.render("signup", { message: "", title: "Signup - Sherubtse College" });
 };
 
 export const postSignup = async (req, res) => {
     const { name, email, password } = req.body;
 
-    // Restrict to college email
     if (!email.endsWith("sherubtse@rub.edu.bt")) {
-        return res.render("signup", { message: "Please use your Sherubtse College email." });
+        return res.render("signup", { message: "Please use your Sherubtse College email.", title: "Signup - Sherubtse College" });
     }
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-        return res.render("signup", { message: "Email already registered." });
+        return res.render("signup", { message: "Email already registered.", title: "Signup - Sherubtse College" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -26,7 +25,6 @@ export const postSignup = async (req, res) => {
 
     await insertUser(userId, name, email, hashedPassword, token);
 
-    // Send verification email
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
@@ -39,31 +37,38 @@ export const postSignup = async (req, res) => {
         html: `<h3>Welcome ${name}</h3><p>Please verify your account by clicking the link: <a href="${url}">Verify</a></p>`
     });
 
-    res.render("verifyEmail", { message: "Check your email to verify your account." });
+    res.render("verifyEmail", { message: "Check your email to verify your account.", title: "Verify Email - Sherubtse College" });
 };
 
 export const verifyEmail = async (req, res) => {
     const token = req.query.token;
     await verifyUser(token);
-    res.render("login", { message: "Email verified successfully. Please login." });
+    res.render("login", { message: "Email verified successfully. Please login.", title: "Login - Sherubtse College" });
 };
 
 export const getLogin = (req, res) => {
-    res.render("login", { message: "" });
+    res.render("login", { message: "", title: "Login - Sherubtse College" });
 };
 
 export const postLogin = async (req, res) => {
     const { email, password } = req.body;
     const user = await findUserByEmail(email);
 
-    if (!user) return res.render("login", { message: "Invalid credentials." });
-    if (!user.is_verified) return res.render("login", { message: "Please verify your email first." });
+    if (!user) 
+        return res.render("login", { message: "Invalid credentials.", title: "Login - Sherubtse College" });
+    if (!user.is_verified) 
+        return res.render("login", { message: "Please verify your email first.", title: "Login - Sherubtse College" });
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.render("login", { message: "Invalid credentials." });
+    if (!match) 
+        return res.render("login", { message: "Invalid credentials.", title: "Login - Sherubtse College" });
 
     req.session.user = user;
-    res.redirect("/dashboard");
+
+    const redirectTo = req.session.redirectTo || "/dashboard";
+    delete req.session.redirectTo;
+
+    res.redirect(redirectTo);
 };
 
 export const logout = (req, res) => {
