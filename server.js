@@ -35,6 +35,12 @@ app.use(
     })
 );
 
+// Middleware to make `user` available in all EJS views
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
+
 // Create tables if not exists
 await createUserTable();
 await createStudentTable();
@@ -42,15 +48,12 @@ await createStudentTable();
 // Landing Page
 app.get("/", (req, res) => {
     if (req.session.user) return res.redirect("/dashboard");
-    res.render("landing");
+    res.render("landing");  // user available automatically in template
 });
 
 // Dashboard Page
 app.get("/dashboard", isAuthenticated, (req, res) => {
-    res.render("dashboard", { 
-        user: req.session.user, 
-        message: "" 
-    });
+    res.render("dashboard", { message: "" }); // user available automatically in template
 });
 
 // Routes

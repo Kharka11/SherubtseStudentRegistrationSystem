@@ -1,60 +1,37 @@
-<%- include('partials/header') %>
-<h2>Student Registration Form</h2>
-<form method="POST" action="/register" enctype="multipart/form-data">
-    <input type="text" name="course" placeholder="Course" required>
-    <input type="number" name="year" placeholder="Year" required>
-    <select name="gender" required>
-        <option value="">Select Gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-    </select>
-    <select name="scholarship" id="scholarship" required onchange="togglePayment(this.value)">
-        <option value="government">Government Scholarship</option>
-        <option value="self">Self-Financed</option>
-    </select>
-    <div id="paymentUpload" style="display:none;">
-        <label>Upload Payment Screenshot:</label>
-        <input type="file" name="payment">
-    </div>
-    <button type="submit">Submit</button>
-</form>
-
-<script>
-function togglePayment(val) {
-    document.getElementById('paymentUpload').style.display = 
-        (val === 'self') ? 'block' : 'none';
-}
-</script>
-<%- include('partials/header', { user: user }) %>
+<%- include('partials/header', { user: user, title: 'Student Registration - Sherubtse' }) %>
 
 <div class="row justify-content-center">
   <div class="col-md-8 col-lg-6">
     <div class="card p-4 shadow mb-5">
       <h3 class="text-center mb-3">Student Registration</h3>
+
       <% if (message) { %>
         <div class="alert alert-success text-center"><%= message %></div>
       <% } %>
+
       <form method="POST" action="/register" enctype="multipart/form-data">
         <div class="mb-3">
           <label>Full Name</label>
-          <input type="text" name="name" class="form-control" required value="<%= student?.name || '' %>">
+          <input type="text" name="name" class="form-control" required value="<%= student?.name || '' %>" />
         </div>
+
         <div class="mb-3">
           <label>Course</label>
           <select name="course" class="form-select" required>
             <option value="">Select Course</option>
             <% [
-              'BA in Economics','BA in English','BA in History','BA in Media Studies',
-              'BA in Political Science & Sociology','BA in Population & Development Studies',
-              'BSc in Chemistry','BSc in Data Science','BSc in Geography','Bsc in Life Sciences',
-              'BSc in Mathematics','BSc in Physics','BSc in Statistics','Common Module',
-              'Data Science & Data Analytics','Digital Communications & Project Management',
-              'Economic & Political Science','Elective Module'
+              'BA in Economics', 'BA in English', 'BA in History', 'BA in Media Studies',
+              'BA in Political Science & Sociology', 'BA in Population & Development Studies',
+              'BSc in Chemistry', 'BSc in Data Science', 'BSc in Geography', 'Bsc in Life Sciences',
+              'BSc in Mathematics', 'BSc in Physics', 'BSc in Statistics', 'Common Module',
+              'Data Science & Data Analytics', 'Digital Communications & Project Management',
+              'Economic & Political Science', 'Elective Module'
             ].forEach(course => { %>
               <option value="<%= course %>" <%= student?.course === course ? 'selected' : '' %>><%= course %></option>
             <% }) %>
           </select>
         </div>
+
         <div class="mb-3">
           <label>Year</label>
           <select name="year" class="form-select" required>
@@ -64,6 +41,7 @@ function togglePayment(val) {
             <% }) %>
           </select>
         </div>
+
         <div class="mb-3">
           <label>Gender</label>
           <select name="gender" class="form-select" required>
@@ -72,21 +50,25 @@ function togglePayment(val) {
             <option value="Female" <%= student?.gender === 'Female' ? 'selected' : '' %>>Female</option>
           </select>
         </div>
+
         <div class="mb-3">
           <label>Scholarship Type</label>
-          <select name="scholarship" id="scholarship" class="form-select" required>
+          <select name="scholarship" id="scholarship" class="form-select" required onchange="togglePayment(this.value)">
             <option value="">Select Type</option>
             <option value="Government" <%= student?.scholarship === 'Government' ? 'selected' : '' %>>Government Scholarship</option>
             <option value="Self-financed" <%= student?.scholarship === 'Self-financed' ? 'selected' : '' %>>Self-financed</option>
           </select>
         </div>
+
         <div id="paymentNote" class="alert alert-warning" style="display: <%= student?.scholarship === 'Self-financed' ? 'block' : 'none' %>;">
           Please transfer the payment to <strong>finance@sherubtse.edu.bt</strong> and upload the screenshot below.
         </div>
-        <div class="mb-3">
+
+        <div class="mb-3" id="paymentUpload" style="display: <%= student?.scholarship === 'Self-financed' ? 'block' : 'none' %>;">
           <label>Payment Screenshot (Only for Self-financed)</label>
-          <input type="file" name="screenshot" class="form-control" accept="image/*">
+          <input type="file" name="screenshot" class="form-control" accept="image/*" />
         </div>
+
         <button type="submit" class="btn btn-success w-100">Submit Registration</button>
       </form>
     </div>
@@ -94,3 +76,10 @@ function togglePayment(val) {
 </div>
 
 <%- include('partials/footer') %>
+
+<script>
+  function togglePayment(val) {
+    document.getElementById('paymentNote').style.display = val === 'Self-financed' ? 'block' : 'none';
+    document.getElementById('paymentUpload').style.display = val === 'Self-financed' ? 'block' : 'none';
+  }
+</script>

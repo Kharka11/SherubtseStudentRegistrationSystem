@@ -16,11 +16,7 @@ export const createStudentTable = async () => {
     `);
 };
 
-export const insertStudent = async (id, userId, course, year, gender, scholarship, screenshotPath) => {
-    await pool.query(
-        `INSERT INTO students (id, user_id, course, year, gender, scholarship, payment_screenshot) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [id, userId, course, year, gender, scholarship, screenshotPath]
-// Insert new student record
+// Insert new student record (Fixed)
 export const insertStudent = async (id, userId, course, year, name, gender, scholarship, screenshotPath) => {
     await pool.query(
         `INSERT INTO students 
