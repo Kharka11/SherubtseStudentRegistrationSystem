@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%- include('partials/header') %>
 <h2>Student Registration Form</h2>
 <form method="POST" action="/register" enctype="multipart/form-data">
@@ -25,4 +26,74 @@ function togglePayment(val) {
         (val === 'self') ? 'block' : 'none';
 }
 </script>
+=======
+<%- include('partials/header', { user: user }) %>
+
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card p-4 shadow mb-5">
+      <h3 class="text-center mb-3">Student Registration</h3>
+      <% if (message) { %>
+        <div class="alert alert-success text-center"><%= message %></div>
+      <% } %>
+      <form method="POST" action="/register" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label>Full Name</label>
+          <input type="text" name="name" class="form-control" required value="<%= student?.name || '' %>">
+        </div>
+        <div class="mb-3">
+          <label>Course</label>
+          <select name="course" class="form-select" required>
+            <option value="">Select Course</option>
+            <% [
+              'BA in Economics','BA in English','BA in History','BA in Media Studies',
+              'BA in Political Science & Sociology','BA in Population & Development Studies',
+              'BSc in Chemistry','BSc in Data Science','BSc in Geography','Bsc in Life Sciences',
+              'BSc in Mathematics','BSc in Physics','BSc in Statistics','Common Module',
+              'Data Science & Data Analytics','Digital Communications & Project Management',
+              'Economic & Political Science','Elective Module'
+            ].forEach(course => { %>
+              <option value="<%= course %>" <%= student?.course === course ? 'selected' : '' %>><%= course %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Year</label>
+          <select name="year" class="form-select" required>
+            <option value="">Select Year</option>
+            <% [1,2,3,4].forEach(y => { %>
+              <option value="<%= y %>" <%= student?.year == y ? 'selected' : '' %>>Year <%= y %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Gender</label>
+          <select name="gender" class="form-select" required>
+            <option value="">Select Gender</option>
+            <option value="Male" <%= student?.gender === 'Male' ? 'selected' : '' %>>Male</option>
+            <option value="Female" <%= student?.gender === 'Female' ? 'selected' : '' %>>Female</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Scholarship Type</label>
+          <select name="scholarship" id="scholarship" class="form-select" required>
+            <option value="">Select Type</option>
+            <option value="Government" <%= student?.scholarship === 'Government' ? 'selected' : '' %>>Government Scholarship</option>
+            <option value="Self-financed" <%= student?.scholarship === 'Self-financed' ? 'selected' : '' %>>Self-financed</option>
+          </select>
+        </div>
+        <div id="paymentNote" class="alert alert-warning" style="display: <%= student?.scholarship === 'Self-financed' ? 'block' : 'none' %>;">
+          Please transfer the payment to <strong>finance@sherubtse.edu.bt</strong> and upload the screenshot below.
+        </div>
+        <div class="mb-3">
+          <label>Payment Screenshot (Only for Self-financed)</label>
+          <input type="file" name="screenshot" class="form-control" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-success w-100">Submit Registration</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+>>>>>>> 7756fb0 (Updated RS)
 <%- include('partials/footer') %>

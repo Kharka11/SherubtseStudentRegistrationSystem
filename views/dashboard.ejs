@@ -1,6 +1,34 @@
 <%- include('partials/header') %>
+<<<<<<< HEAD
 <h2>Welcome, <%= user.name %></h2>
 <a href="/register" class="btn">Register as Student</a>
 <a href="/logout" class="btn">Logout</a>
 <p><%= message %></p>
+=======
+<div class="container mt-5">
+  <h2 class="mb-4">Welcome, <%= user.name %>!</h2>
+
+  <% if (student) { %>
+    <div class="card p-3 mb-4">
+      <h5>📄 Registration Details</h5>
+      <ul class="list-group list-group-flush mt-2">
+        <li class="list-group-item"><strong>Course:</strong> <%= student.course %></li>
+        <li class="list-group-item"><strong>Year:</strong> <%= student.year %></li>
+        <li class="list-group-item"><strong>Gender:</strong> <%= student.gender %></li>
+        <li class="list-group-item"><strong>Scholarship:</strong> <%= student.scholarship %></li>
+        <% if (student.payment_screenshot) { %>
+          <li class="list-group-item">
+            <strong>Payment Screenshot:</strong><br>
+            <img src="/uploads/<%= student.payment_screenshot %>" alt="Payment" class="img-thumbnail mt-2" style="max-width: 200px;">
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  <% } else { %>
+    <div class="alert alert-info">You haven’t completed the registration yet.</div>
+  <% } %>
+
+  <a href="/register" class="btn btn-primary">Complete / Update Registration</a>
+</div>
+>>>>>>> 7756fb0 (Updated RS)
 <%- include('partials/footer') %>
