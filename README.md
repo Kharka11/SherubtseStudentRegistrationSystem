@@ -13,7 +13,7 @@ A full-stack web application for student registration and course enrollment at S
 
 ## Features
 
-- Signup restricted to `sherubtse@rub.edu.bt` email addresses (e.g. `firstname.sherubtse@rub.edu.bt`)
+- Signup restricted to `sherubtse@rub.edu.bt` email addresses (e.g. `index.sherubtse@rub.edu.bt`)
 - Email verification before login
 - Student registration form (course, year, gender, scholarship type, payment screenshot)
 - Dashboard showing registered student details
